@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public UIManager uIManager;
     public SoundManager soundManager;
     public LevelManager levelManager;
+    
     [Header("Player")]
     public PlayerController player;
     // Start is called before the first frame update
@@ -64,34 +65,53 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    // Update is called once per frame
-    void Update()
+
+    /// <summary>
+    /// Returns to prev state, used by options menu. 
+    /// </summary>
+    public void BackToPrevState()
     {
-
+        switch(previousState)
+        {
+            case GameState.MainMenu:
+                ChangeGameState("MainMenu");
+                break;
+            case GameState.Paused:
+                ChangeGameState("Pause");
+                break;
+        }
     }
-
+    /// <summary>
+    /// Gets system ready for main menu
+    /// </summary>
     void MainMenu()
     {
-        player.RB2D.simulated = false;
+        Time.timeScale = 1;
     }
 
+    /// <summary>
+    /// Gets systems ready for GamePlay;
+    /// </summary>
     void GamePlay()
     {
-        player.RB2D.simulated = true;
+        Time.timeScale = 1;
     }
 
     void Options()
     {
-
+        
     }
 
+    /// <summary>
+    /// Sets timescale to 0 for pause function.
+    /// </summary>
     void Pause()
     {
-
+        Time.timeScale = 0;
     }
 
     void GameEnd()
     {
-
+        
     }
 }

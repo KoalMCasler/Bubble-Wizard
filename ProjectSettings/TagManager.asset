@@ -7,7 +7,8 @@ TagManager:
   - Platform
   - Enemy
   - Moveable
-  - Bounds
+  - Spawn
+  - Confiner
   layers:
   - Default
   - TransparentFX

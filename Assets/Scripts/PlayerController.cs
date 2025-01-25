@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [Header("Managers")]
     [SerializeField]
     private GameManager gameManager;
+    [SerializeField]
+    private UIManager uIManager;
     public Rigidbody2D RB2D;
     private Animator playerAnim;
     [Header("Stats")]
@@ -39,16 +41,16 @@ public class PlayerController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>();
     }
-
     void Awake()
     {
-        gameManager = GameManager.gameManager;
+        gameManager = FindObjectOfType<GameManager>();
+        uIManager = FindObjectOfType<UIManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isAttacking)
+        if(isAttacking || gameManager.gameState != GameManager.GameState.GamePlay)
         {
             playerInput.enabled = false;
         }
@@ -71,6 +73,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Move input event
+    /// </summary>
+    /// <param name="movementValue"></param>
     void OnMove(InputValue movementValue)
     {
         if(gameManager.gameState == GameManager.GameState.GamePlay)
@@ -96,6 +102,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Fire input event
+    /// </summary>
     void OnFire()
     {
         if(isGrounded)
@@ -107,6 +116,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Throws out a bubble based on how your facing and destroys any active bubbles.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator CastBubble()
     {
         yield return new WaitForSeconds(shotDelay);
@@ -142,6 +155,9 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
+    /// <summary>
+    /// Jump input event
+    /// </summary>
     void OnJump()
     {
         if(isGrounded)
@@ -153,6 +169,24 @@ public class PlayerController : MonoBehaviour
             Destroy(jumpParticles,particleDecayRate);
         }
     }
+
+    /// <summary>
+    /// Pause input event.
+    /// </summary>
+    void OnPause()
+    {
+        if(gameManager.gameState == GameManager.GameState.GamePlay)
+        {
+            gameManager.ChangeGameState("Pause");
+            uIManager.SetUIPause();
+            
+        }
+        else if(gameManager.gameState == GameManager.GameState.Paused)
+        {
+            UnPause();
+        }
+    }
+
 
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -170,10 +204,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Used to bounce player off of bubbles.
+    /// </summary>
     public void Bounce()
     {
         RB2D.AddForce(transform.up * jumpForce*1.25f);
         GameObject jumpParticles = Instantiate(jumpParticleEffect,jumpParticlePosition);
         Destroy(jumpParticles,particleDecayRate);
     }
+
+    /// <summary>
+    /// UnPause function, used by pause menu. 
+    /// </summary>
+    public void UnPause()
+    {
+        gameManager.ChangeGameState("GamePlay");
+        uIManager.SetUIHUD();
+    }
+
 }
