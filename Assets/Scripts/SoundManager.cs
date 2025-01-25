@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class SoundManager : MonoBehaviour
 {
-    public enum GameState{MainMenu, Gameplay, Paused, GameEnd}
-    public GameState gameState;
     // Start is called before the first frame update
     void Start()
     {

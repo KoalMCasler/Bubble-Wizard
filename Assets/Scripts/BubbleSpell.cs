@@ -74,6 +74,15 @@ public class BubbleSpell : MonoBehaviour
             capturedTarget = other.gameObject;
             capturedTarget.GetComponent<Collider2D>().enabled = false;
             capturedTarget.GetComponent<Rigidbody2D>().simulated = false;
+            if(other.gameObject.tag == "Enemy")
+            {
+                if(capturedTarget.GetComponent<EnemyAI>().isOnPatrol)
+                {
+                    capturedTarget.GetComponent<EnemyAI>().isOnPatrol = false;
+                    capturedTarget.GetComponent<EnemyAI>().wasOnPatrol = true;
+                    capturedTarget.GetComponent<EnemyAI>().enemyAnim.SetBool("isOnPatrol",capturedTarget.GetComponent<EnemyAI>().isOnPatrol);
+                }
+            }
         }
         else if(other.gameObject.tag == "Player")
         {

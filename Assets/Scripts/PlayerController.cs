@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -9,17 +11,14 @@ public class PlayerController : MonoBehaviour
     [Header("Managers")]
     [SerializeField]
     private GameManager gameManager;
-    [SerializeField]
-    private Rigidbody2D RB2D;
+    public Rigidbody2D RB2D;
     private Animator playerAnim;
     [Header("Stats")]
     public float moveSpeed;
     public float jumpForce;
     public float shotForce;
     public bool isGrounded;
-    public float aimAngleMod;
     public float shotDelay;
-    public float jumpTime;
     private bool isAttacking;
     public GameObject bubbleSpell;
     public Transform attackPoint;
@@ -27,21 +26,23 @@ public class PlayerController : MonoBehaviour
     public Vector2 moveDirection;
     public GameObject activeBubble;
     public Rigidbody2D bubbleRB;
-    private Vector2 standingOffset;
-    private Vector2 jumpOffset;
     public PlayerInput playerInput;
     public Transform jumpParticlePosition;
     public GameObject jumpParticleEffect;
     public float particleDecayRate;
+    public float knockbackForce;
 
     // Start is called before the first frame update
     void Start()
     {
         RB2D = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
-        standingOffset = GetComponent<Collider2D>().offset;
         playerInput = GetComponent<PlayerInput>();
-        jumpOffset = new Vector2(standingOffset.x,-0.8f);
+    }
+
+    void Awake()
+    {
+        gameManager = GameManager.gameManager;
     }
 
     // Update is called once per frame
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     void OnMove(InputValue movementValue)
     {
-        if(gameManager.gameState == GameManager.GameState.Gameplay)
+        if(gameManager.gameState == GameManager.GameState.GamePlay)
         {
             moveDirection = movementValue.Get<Vector2>();
             if(moveDirection.x < 0)
@@ -85,11 +86,11 @@ public class PlayerController : MonoBehaviour
             }
             if(moveDirection.x != 0)
             {
-                playerAnim.SetBool("IsMoveing", true);
+                playerAnim.SetBool("isMoveing", true);
             }
             else
             {
-                playerAnim.SetBool("IsMoveing", false);
+                playerAnim.SetBool("isMoveing", false);
             }
 
         }
@@ -116,11 +117,11 @@ public class PlayerController : MonoBehaviour
             bubbleRB = activeBubble.GetComponent<Rigidbody2D>();
             if(isFacingLeft)
             {
-                bubbleRB.AddForce((Vector2.left + (Vector2.down/aimAngleMod)) * shotForce);
+                bubbleRB.AddForce(Vector2.left * shotForce);
             }
             else
             {
-                bubbleRB.AddForce((Vector2.right + (Vector2.down/aimAngleMod)) * shotForce);
+                bubbleRB.AddForce(Vector2.right * shotForce);
             }
         }
         else
@@ -131,11 +132,11 @@ public class PlayerController : MonoBehaviour
             bubbleRB = activeBubble.GetComponent<Rigidbody2D>();
             if(isFacingLeft)
             {
-                bubbleRB.AddForce((Vector2.left + (Vector2.down/aimAngleMod)) * shotForce);
+                bubbleRB.AddForce(Vector2.left * shotForce);
             }
             else
             {
-                bubbleRB.AddForce((Vector2.right + (Vector2.down/aimAngleMod)) * shotForce);
+                bubbleRB.AddForce(Vector2.right * shotForce);
             }
         }
         isAttacking = false;

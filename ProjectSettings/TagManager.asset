@@ -7,6 +7,7 @@ TagManager:
   - Platform
   - Enemy
   - Moveable
+  - Bounds
   layers:
   - Default
   - TransparentFX
