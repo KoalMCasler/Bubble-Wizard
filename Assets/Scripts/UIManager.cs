@@ -26,11 +26,13 @@ public class UIManager : MonoBehaviour
     public float fadeTime;
     [Header("Options Menu")]
     public Slider masterVolSlider;
-    private float masterValue;
     public Slider musicVolSlider;
-    private float musicValue;
     public Slider sFXVolSlider;
-    private float sfxValue;
+    [Header("Buttons")]
+    public Button startButton;
+    public Button backButton;
+    public Button creditsBackButton;
+    public Button resumeButton;
 
 
     // Start is called before the first frame update
@@ -59,6 +61,7 @@ public class UIManager : MonoBehaviour
     public void SetUIMenu()
     {
         ResetAllMenus();
+        startButton.Select();
         mainMenu.SetActive(true);
     }
     /// <summary>
@@ -67,6 +70,7 @@ public class UIManager : MonoBehaviour
     public void SetUIPause()
     {
         ResetAllMenus();
+        resumeButton.Select();
         pauseMenu.SetActive(true);
     }
     /// <summary>
@@ -75,6 +79,7 @@ public class UIManager : MonoBehaviour
     public void SetUIOptions()
     {
         ResetAllMenus();
+        backButton.Select();
         gameManager.ChangeGameState("Options");
         optionsMenu.SetActive(true);
     }
@@ -94,7 +99,7 @@ public class UIManager : MonoBehaviour
     public void SetUICredits()
     {
         ResetAllMenus();
-        soundManager.PlayMusic(2);
+        creditsBackButton.Select();
         creditsMenu.SetActive(true);
     }
 
@@ -237,6 +242,18 @@ public class UIManager : MonoBehaviour
             case "SFXVol":
                 soundManager.ChangeVolume(group,sFXVolSlider.value);
                 break;
+        }
+    }
+
+    public void BackFromCredits()
+    {
+        if(gameManager.gameState == GameManager.GameState.MainMenu)
+        {
+            SetUIMenu();
+        }
+        else if(gameManager.gameState == GameManager.GameState.GameEnd)
+        {
+            levelManager.LoadScene("MainMenu");
         }
     }
 }

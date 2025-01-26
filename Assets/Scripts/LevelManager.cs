@@ -45,10 +45,12 @@ public class LevelManager : MonoBehaviour
         else if(gameManager.gameState == GameManager.GameState.MainMenu)
         {
             soundManager.PlayMusic(0);
+            uIManager.startButton.Select();
         }
         else if(gameManager.gameState == GameManager.GameState.GameEnd)
         {
             soundManager.PlayMusic(2);
+            uIManager.creditsBackButton.Select();
         }
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
@@ -70,8 +72,13 @@ public class LevelManager : MonoBehaviour
                 uIManager.UILoadingScreen(uIManager.mainMenu); 
                 gameManager.ChangeGameState("MainMenu");
                 break;
+            case "GameEnd":
+                uIManager.UILoadingScreen(uIManager.creditsMenu);
+                gameManager.ChangeGameState("GameEnd");
+                break;
             default:
-                uIManager.UILoadingScreen(uIManager.HUD); 
+                uIManager.UILoadingScreen(uIManager.mainMenu); 
+                gameManager.ChangeGameState("MainMenu");
                 break;
         }
         StartCoroutine(WaitForScreenLoad(sceneName));

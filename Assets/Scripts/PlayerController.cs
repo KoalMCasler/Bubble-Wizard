@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -53,6 +54,8 @@ public class PlayerController : MonoBehaviour
         if(isAttacking || gameManager.gameState != GameManager.GameState.GamePlay)
         {
             playerInput.enabled = false;
+            moveDirection = Vector2.zero;
+            playerAnim.SetBool("isMoveing", false);
         }
         else
         {
@@ -190,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if(col.gameObject.CompareTag("Platform") || col.gameObject.CompareTag("Moveable"))
+        if(col.gameObject.CompareTag("Platform") || col.gameObject.CompareTag("Moveable") && col.gameObject.transform.position.y < transform.position.y)
         {
             isGrounded = true;
         }
