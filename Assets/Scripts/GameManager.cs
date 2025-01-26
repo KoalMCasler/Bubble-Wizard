@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
     void MainMenu()
     {
         Time.timeScale = 1;
+        uIManager.startButton.Select();
     }
 
     /// <summary>

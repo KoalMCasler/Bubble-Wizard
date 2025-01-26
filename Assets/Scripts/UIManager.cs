@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
     public Button backButton;
     public Button creditsBackButton;
     public Button resumeButton;
+    [Header("HUD")]
+    public Slider progressBar;
 
 
     // Start is called before the first frame update
@@ -43,6 +45,14 @@ public class UIManager : MonoBehaviour
         soundManager = FindObjectOfType<SoundManager>();
         SetUIMenu();
         GetStartingVolume();
+    }
+
+    void Update()
+    {
+        if(gameManager.gameState == GameManager.GameState.GamePlay)
+        {
+            progressBar.value = gameManager.player.transform.position.x;
+        }
     }
     /// <summary>
     /// Clears all menus for activating the one you want.

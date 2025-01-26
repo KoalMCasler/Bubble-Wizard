@@ -76,6 +76,14 @@ public class PlayerController : MonoBehaviour
         {
             transform.rotation = new Quaternion(0,0,0,1);
         }
+        if(isGrounded && moveDirection.x != 0)
+        {
+            soundManager.PlayContinuesSFX(0);
+        }
+        else
+        {
+            soundManager.contSFXSource.Stop();
+        }
     }
 
     /// <summary>
@@ -98,12 +106,10 @@ public class PlayerController : MonoBehaviour
             if(moveDirection.x != 0)
             {
                 playerAnim.SetBool("isMoveing", true);
-                soundManager.PlayContinuesSFX(0);
             }
             else
             {
                 playerAnim.SetBool("isMoveing", false);
-                soundManager.contSFXSource.Stop();
             }
 
         }
@@ -198,7 +204,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
         if(col.gameObject.CompareTag("Platform") || col.gameObject.CompareTag("Moveable") && col.gameObject.transform.position.y < transform.position.y)
         {
