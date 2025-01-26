@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class BubbleSpell : MonoBehaviour
 {
+    public SoundManager soundManager;
     public Rigidbody2D bubbleRb;
     public float velocityThreshold;
     public Vector3 emptyScale;
@@ -15,6 +16,8 @@ public class BubbleSpell : MonoBehaviour
     public GameObject capturedTarget;
     public GameObject popParticles;
     public float colliderDelayTime;
+    public ParticleSystem particleSystem;
+    private int particleCount;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,8 @@ public class BubbleSpell : MonoBehaviour
         this.GetComponent<Collider2D>().enabled = false;
         StartCoroutine("ColliderDelay");
         transform.localScale = Vector3.one;
+        particleSystem = GetComponent<ParticleSystem>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
 
@@ -50,10 +55,17 @@ public class BubbleSpell : MonoBehaviour
         {
             capturedTarget.transform.position = this.transform.position;
         }
+        var amount = Mathf.Abs(particleCount - particleSystem.particleCount);
+        if(particleSystem.particleCount < particleCount)
+        {
+            soundManager.PlaySFX(5);
+        }
+        particleCount = particleSystem.particleCount;
     }
 
     void TrapTarget()
     {
+        soundManager.PlaySFX(3);
         transform.localScale = Vector3.zero;
         transform.DOScale(capturedScale, 1f).SetEase(Ease.OutElastic);
         hasExpanded = true;
@@ -102,6 +114,7 @@ public class BubbleSpell : MonoBehaviour
 
     void OnDestroy()
     {
+        soundManager.PlaySFX(2);
         GameObject burst = Instantiate(popParticles,transform.position,transform.rotation);
         Destroy(burst,1);
         if(capturedTarget != null)

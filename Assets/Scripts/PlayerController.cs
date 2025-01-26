@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private GameManager gameManager;
     [SerializeField]
     private UIManager uIManager;
+    public SoundManager soundManager;
     public Rigidbody2D RB2D;
     private Animator playerAnim;
     [Header("Stats")]
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         uIManager = FindObjectOfType<UIManager>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     // Update is called once per frame
@@ -96,10 +98,12 @@ public class PlayerController : MonoBehaviour
             if(moveDirection.x != 0)
             {
                 playerAnim.SetBool("isMoveing", true);
+                soundManager.PlayContinuesSFX(0);
             }
             else
             {
                 playerAnim.SetBool("isMoveing", false);
+                soundManager.contSFXSource.Stop();
             }
 
         }
@@ -112,6 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isGrounded)
         {
+            soundManager.PlaySFX(4);
             isAttacking = true;
             //Debug.Log("Bubble Triggered");
             playerAnim.SetTrigger("Attack");
@@ -165,6 +170,8 @@ public class PlayerController : MonoBehaviour
     {
         if(isGrounded)
         {
+            soundManager.contSFXSource.Stop();
+            soundManager.PlaySFX(1);
             playerAnim.SetTrigger("Jump");
             //Debug.Log("Jump Triggered");
             RB2D.AddForce(transform.up * jumpForce);

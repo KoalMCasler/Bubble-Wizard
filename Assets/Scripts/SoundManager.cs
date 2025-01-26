@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     public List<AudioClip> sfx;
     public AudioSource musicSource;
     public AudioSource sfxSource;
+    public AudioSource contSFXSource;
     public AudioMixer mixer;
 
     /// <summary>
@@ -39,6 +40,24 @@ public class SoundManager : MonoBehaviour
             {
                 Debug.Log("Song index out of range");
             }
+        }
+    }
+    /// <summary>
+    /// Plays continuing sfx from list of sfxs, see editor for list and indexs
+    /// </summary>
+    /// <param name="sfxIndex"></param>
+    public void PlayContinuesSFX(int sfxIndex)
+    {
+        if(sfxIndex < sfx.Count && sfxIndex >= 0)
+        {
+            contSFXSource.clip = sfx[sfxIndex];
+            contSFXSource.loop = true;
+            contSFXSource.Play();
+            //Debug.Log("Playing " + sfx[sfxIndex].name);
+        }
+        else
+        {
+            Debug.Log("SFX index out of range");
         }
     }
     /// <summary>

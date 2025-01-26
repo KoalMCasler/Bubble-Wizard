@@ -34,6 +34,7 @@ public class LevelManager : MonoBehaviour
     /// <param name="mode"></param>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        soundManager.contSFXSource.Stop();
         spawnPoint = GameObject.FindWithTag("Spawn").transform;
         player.transform.position = spawnPoint.position;
         confiner2D.m_BoundingShape2D = GameObject.FindWithTag("Confiner").GetComponent<Collider2D>();
