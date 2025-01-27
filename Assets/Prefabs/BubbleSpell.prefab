@@ -111,7 +111,7 @@ MonoBehaviour:
   isFacingLeft: 0
   capturedTarget: {fileID: 0}
   popParticles: {fileID: 2819446030220144187, guid: 097420c5a830af14480a1f392980234b, type: 3}
-  colliderDelayTime: 0.25
+  colliderDelayTime: 0.05
   particleSystem: {fileID: 0}
 --- !u!198 &3912156796330586860
 ParticleSystem:

@@ -116,7 +116,7 @@ public class BubbleSpell : MonoBehaviour
     {
         soundManager.PlaySFX(2);
         GameObject burst = Instantiate(popParticles,transform.position,transform.rotation);
-        Destroy(burst,1);
+        Destroy(burst,3);
         if(capturedTarget != null)
         {
             ReleaseTarget();
